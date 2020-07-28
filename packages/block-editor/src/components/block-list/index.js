@@ -28,7 +28,7 @@ function BlockList(
 		className,
 		rootClientId,
 		renderAppender,
-		__experimentalItemWrapper: ItemWrapper,
+		__experimentalItemWrapper,
 		__experimentalTagName = 'div',
 		__experimentalAppenderTagName,
 		__experimentalPassedProps = {},
@@ -92,7 +92,7 @@ function BlockList(
 
 				const isDropTarget = dropTargetIndex === index;
 
-				const blockListBlock = (
+				return (
 					<AsyncModeProvider
 						key={ clientId }
 						value={ ! isBlockInSelection }
@@ -105,20 +105,18 @@ function BlockList(
 							// otherwise there might be a small delay to trigger the animation.
 							index={ index }
 							enableAnimation={ enableAnimation }
+							// The drop target classes should be applied to the wrapper
+							// if one exists.
 							className={ classnames( {
 								'is-drop-target': isDropTarget,
 								'is-dropping-horizontally':
 									isDropTarget &&
 									orientation === 'horizontal',
 							} ) }
+							__experimentalWrapper={ __experimentalItemWrapper }
 						/>
 					</AsyncModeProvider>
 				);
-
-				if ( ItemWrapper ) {
-					return <ItemWrapper>{ blockListBlock }</ItemWrapper>;
-				}
-				return blockListBlock;
 			} ) }
 			<BlockListAppender
 				tagName={ __experimentalAppenderTagName }
